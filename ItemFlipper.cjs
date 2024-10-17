@@ -22,8 +22,6 @@ async function fetchData() {
         //let auctionData = JSON.parse(fs.readFileSync('auctionData.json', 'utf8'));
         //const prices = JSON.parse(fs.readFileSync('prices.json', 'utf8'));
 
-
-
         //gem identifiers
         const PS = '1665561541';
         const RS = '1665561540';
@@ -60,7 +58,7 @@ async function fetchData() {
             let highprice = list[naEast][high].price;
             profit = highprice * tax - lowprice * ratio;
             spent = ratio * lowprice;
-            increase = profit / spent;
+            increase = (profit+spent) / spent;
             if (profit > 1) {
                 Result(low, high);
             }
@@ -173,24 +171,41 @@ async function fetchData() {
         Dissolve(PM, RM, 15);
         Dissolve(RM, QM, 15);
         
-        
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        
-        rl.question('Press enter to exit', (answer) => {
-            rl.close();
-        });
-        
-        
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
     }
 }
 
 // Call the async function
-fetchData().then(prices => {
-    //console.log('Fetched data in main:', prices); // Log the data in the main flow
+function start() {
+    
+    fetchData();
+
+    const intervalID = setInterval(() => {
+        fetchData();
+    }, 30000);
+    return intervalID;
+}
+
+const intervalId = start();
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 });
+
+rl.on('line', (input) => {
+    if (input.trim().toLowerCase() === '') {
+        clearInterval(intervalId);
+        console.log('Exiting the process.');
+        rl.close();
+    }
+});
+
+rl.on('close', () => {
+    console.log('Process stopped.');
+    process.exit(0);   // Ensure the program exits cleanly
+});
+
+console.log("Press 'enter' at any time to stop.");
 
