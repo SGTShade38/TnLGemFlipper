@@ -1,0 +1,22 @@
+{
+  "name": "itemflipper",
+  "version": "1.0.0",
+  "bin": "ItemFlipper.cjs",
+  "pkg": {
+    "targets": [
+      "node18-win-x64"
+    ]
+  },
+  "main": "ItemFlipper.cjs",
+  "type": "module",
+  "scripts": {
+    "start": "node ItemFlipper.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "compress-json": "^3.1.0"
+  }
+}
